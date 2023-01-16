@@ -16,7 +16,8 @@ class SplitData:
                  train_fraction = 0.8,  # the fraction of the data to use for training
                  eval_fraction = 0.2, # the fraction of the data to use for evaluation
                  test=False, # whether to include a test set in the split
-                 random_seed=None):
+                 random_seed=1234 # the random seed to use for the split
+                 ):
         self.scdata = scdata
         self.train_fraction = train_fraction
         self.eval_fraction = eval_fraction
