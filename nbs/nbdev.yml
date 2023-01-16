@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "sc_generative_demo"
+  site-url: "https://main.github.io/sc_generative_demo"
+  description: "testing nb_dev"
+  repo-branch: main
+  repo-url: "https://github.com/main/sc_generative_demo"
