@@ -17,7 +17,7 @@ class VariationalEncoder(nn.Module):
         self.hidden_sizes = hidden_sizes
         self.latent_size = latent_size
         self.dropout = dropout
-        self.use_batch_norm = use_norm
+        self.use_norm = use_norm
 
         # create a list of layers
         layers = []
@@ -31,7 +31,7 @@ class VariationalEncoder(nn.Module):
         # hidden layers
         for i in range(1, len(self.hidden_sizes)):
             layers.append(nn.Linear(self.hidden_sizes[i-1], self.hidden_sizes[i]))
-            if self.use_batch_norm:
+            if self.use_norm:
                 layers.append(nn.InstanceNorm1d(self.hidden_sizes[i]))
             layers.append(nn.LeakyReLU(0.2))
             if self.dropout > 0:
@@ -41,8 +41,6 @@ class VariationalEncoder(nn.Module):
       
         # create the model using Sequential
         self.model = nn.Sequential(*layers)
-        
-        
 
     def forward(self, x):
         x = self.model(x)
