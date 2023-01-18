@@ -39,14 +39,10 @@ class VariationalEncoder(nn.Module):
       
         # create the model using Sequential
         self.model = nn.Sequential(*layers)
-        self.model.mu_layer = nn.Linear(self.hidden_sizes[-1], self.latent_size)
-        self.model.logvar_layer = nn.Linear(self.hidden_sizes[-1], self.latent_size)
+        
         
 
     def forward(self, x):
-        for layer in self.model[:-2]:
-            x = layer(x)
-        mu = self.model.mu_layer(x)
-        logvar = self.model.logvar_layer(x)
-        return mu, logvar
+        x = self.model(x)
+        return x[:, :self.latent_size], x[:, self.latent_size:]
 
