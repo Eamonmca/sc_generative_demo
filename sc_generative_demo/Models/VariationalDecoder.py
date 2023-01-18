@@ -9,11 +9,12 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 class VariationalDecoder(nn.Module):
-    def __init__(self, input_size, hidden_size, output_size, dropout, use_norm):
+    """Variational Decoder model"""
+    def __init__(self, input_size, hidden_sizes, output_size, dropout, use_norm):
         super().__init__()
         self.input_size = input_size
         self.output_size = output_size
-        self.hidden_size = hidden_size
+        self.hidden_sizes = hidden_sizes
         self.dropout = dropout
         self.use_batch_norm = use_norm
         
@@ -21,22 +22,22 @@ class VariationalDecoder(nn.Module):
         layers = []
 
         # input layer
-        layers.append(nn.Linear(self.input_size, self.hidden_size))
+        layers.append(nn.Linear(self.input_size, self.hidden_sizes[0]))
         layers.append(nn.LeakyReLU(0.2))
         if self.dropout > 0:
             layers.append(nn.Dropout(p=self.dropout))
 
         # hidden layers
-        layers.append(nn.Linear(self.hidden_size, self.hidden_size))
-        if self.use_batch_norm:
-            layers.append(nn.InstanceNorm1d(self.hidden_size))
-        layers.append(nn.LeakyReLU(0.2))
-        if self.dropout > 0:
-            layers.append(nn.Dropout(p=self.dropout))
+        for i in range(1, len(self.hidden_sizes)):
+            layers.append(nn.Linear(self.hidden_sizes[i-1], self.hidden_sizes[i]))
+            if self.use_batch_norm:
+                layers.append(nn.InstanceNorm1d(self.hidden_sizes[i]))
+                layers.append(nn.LeakyReLU(0.2))
+            if self.dropout > 0:
+                layers.append(nn.Dropout(p=self.dropout))
         
         # output layer
-        layers.append(nn.Linear(self.hidden_size, self.output_size))
-        layers.append(nn.Sigmoid())
+        layers.append(nn.Linear(self.hidden_sizes[-1], self.output_size))
 
         # create the model using Sequential
         self.model = nn.Sequential(*layers)

@@ -5,3 +5,7 @@ website:
       - 00_core.ipynb
       - 01_device_management.ipynb
       - 02_data_management.ipynb
+      - 03_datasets.ipynb
+      - 04_Model_Classifier.ipynb
+      - 05_Model_Variational_Encoder.ipynb
+      - 06_Model_Variational_Decoder.ipynb

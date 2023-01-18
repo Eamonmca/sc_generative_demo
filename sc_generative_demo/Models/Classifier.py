@@ -9,7 +9,10 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 class Classifier(nn.Module):
-    def __init__(self, input_size, hidden_sizes, output_size, dropout, use_batch_norm, spectral_norm=False):
+    """A simple classifier model.
+    """
+    def __init__(self, input_size:int, # number of features
+                  hidden_sizes:list , output_size, dropout, use_batch_norm, spectral_norm=False):
         super().__init__()
 
         self.input_size = input_size
