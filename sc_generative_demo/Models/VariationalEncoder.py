@@ -37,12 +37,12 @@ class VariationalEncoder(nn.Module):
             if self.dropout > 0:
                 layers.append(nn.Dropout(p=self.dropout))
             
-        layers.append(nn.Linear(self.hidden_sizes[-1], self.latent_size))
+        # layers.append(nn.Linear(self.hidden_sizes[-1], self.latent_size))
       
         # create the model using Sequential
         self.model = nn.Sequential(*layers)
-        self.mu_layer = nn.Linear(self.hidden_sizes[-1], self.latent_size)
-        self.logvar_layer = nn.Linear(self.hidden_sizes[-1], self.latent_size)
+        self.mu_layer = nn.Linear(self.latent_size, self.latent_size)
+        self.logvar_layer = nn.Linear(self.latent_size, self.latent_size)
        
         
 
