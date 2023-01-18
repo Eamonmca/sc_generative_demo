@@ -44,5 +44,5 @@ class VariationalEncoder(nn.Module):
 
     def forward(self, x):
         x = self.model(x)
-        return x[:, :self.latent_size], x[:, self.latent_size:]
+        return x
 
