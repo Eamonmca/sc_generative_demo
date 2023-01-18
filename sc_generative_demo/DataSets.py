@@ -9,8 +9,8 @@ class Gex_DTS_Data_Label(torch.utils.data.Dataset):
     def __init__(self, 
                  data
                  ,labels):
-        self.data = data
-        self.labels = labels
+        self.data = torch.tensor(data)
+        self.labels = torch.tensor(labels)
 
     def __len__(self):
         return len(self.data)
