@@ -44,7 +44,8 @@ class VariationalEncoder(nn.Module):
         
 
     def forward(self, x):
-        x = self.model(x)
+        for layer in self.model[:-2]:
+            x = layer(x)
         mu = self.model.mu_layer(x)
         logvar = self.model.logvar_layer(x)
         return mu, logvar
