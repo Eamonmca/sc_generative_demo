@@ -36,6 +36,8 @@ class VariationalEncoder(nn.Module):
             layers.append(nn.LeakyReLU(0.2))
             if self.dropout > 0:
                 layers.append(nn.Dropout(p=self.dropout))
+            
+        layers.append(nn.Linear(self.hidden_sizes[-1], self.latent_size))
       
         # create the model using Sequential
         self.model = nn.Sequential(*layers)
