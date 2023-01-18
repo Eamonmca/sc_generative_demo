@@ -50,5 +50,4 @@ class VariationalEncoder(nn.Module):
         x = self.model(x)
         mu = self.mu_layer(x)
         logvar = self.logvar_layer(x)
-        return x
-
+        return mu, logvar
