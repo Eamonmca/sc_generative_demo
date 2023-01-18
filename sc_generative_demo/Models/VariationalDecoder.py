@@ -18,6 +18,7 @@ class VariationalDecoder(nn.Module):
         self.dropout = dropout
         self.use_batch_norm = use_norm
         
+        
         # create a list of layers
         layers = []
 
@@ -32,7 +33,7 @@ class VariationalDecoder(nn.Module):
             layers.append(nn.Linear(self.hidden_sizes[i-1], self.hidden_sizes[i]))
             if self.use_batch_norm:
                 layers.append(nn.InstanceNorm1d(self.hidden_sizes[i]))
-                layers.append(nn.LeakyReLU(0.2))
+            layers.append(nn.LeakyReLU(0.2))
             if self.dropout > 0:
                 layers.append(nn.Dropout(p=self.dropout))
         
