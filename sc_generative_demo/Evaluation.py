@@ -30,9 +30,9 @@ def plot_embeddings(scdata, color_key_list, basis_list, device, show=False, log=
 @patch_to(Visualize)
 def plot_umaps(scdata, color_key_list, rep_list, device, show=False, log=True):
     for rep in rep_list:
+        umap = sc.pp.neighbors(scdata, use_rep=rep)
+        sc.tl.umap(scdata)
         for color_key in color_key_list:
-            umap = sc.pp.neighbors(scdata, use_rep=rep)
-            sc.tl.umap(scdata)
             umap = sc.pl.umap(scdata, color=color_key, wspace=0.3, show = show)
             if log:
                 wandb.log({"UMAP_{}_{}".format(rep, color_key): wandb.Image(umap)})
