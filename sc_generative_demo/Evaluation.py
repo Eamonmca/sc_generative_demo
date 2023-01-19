@@ -15,6 +15,49 @@ class Visualize:
     pass
     
 
+# %% ../nbs/07_Evaluation.ipynb 4
+@patch_to(Visualize)
+def plot_embeddings(scdata, color_key_list, basis_list, show=False, log=True):
+    for basis in basis_list:
+        for color_key in color_key_list:
+            plot_embeddings = sc.pl.embedding(scdata, basis=basis_list, color=color_key, wspace=0.3,  show=show)
+            if log:
+                wandb.log({"plot_embeddings_{}_{}".format(basis, color_key): wandb.Image(plot_embeddings)})
+
+# %% ../nbs/07_Evaluation.ipynb 5
+@patch_to(Visualize)
+def plot_umaps(scdata, color_key_list, rep_list, show=False, log=True):
+    for rep in rep_list:
+        for color_key in color_key_list:
+            umap = sc.pp.neighbors(scdata, use_rep=rep)
+            sc.tl.umap(scdata)
+            umap = sc.pl.umap(scdata, color=color_key, wspace=0.3, show = show)
+            if log:
+                wandb.log({"UMAP_{}_{}".format(rep, color_key): wandb.Image(umap)})
+
 # %% ../nbs/07_Evaluation.ipynb 6
 class Inferance:
    "Inferance of the model"
+
+# %% ../nbs/07_Evaluation.ipynb 7
+@patch_to(Inferance)
+def get_embeddings_VAEGAN(VAEGAN, dataloader):
+    with torch.no_grad():
+        embeddings = []
+        labels = []
+        for batch, label in dataloader:
+            batch = batch.to(device)
+            x_hat, y_hat, mu, sigma = VAEGAN(batch)
+            embeddings.append(mu.cpu().numpy())
+            labels.append(label.cpu().numpy())
+        embeddings = np.concatenate(embeddings)
+        labels = np.concatenate(labels)
+        return embeddings, labels
+
+# %% ../nbs/07_Evaluation.ipynb 8
+@patch_to(Inferance)
+def decode_embeddings_VAEGAN(VAEGAN, embeddings):
+    with torch.no_grad():
+        embeddings = torch.from_numpy(embeddings).to(device)
+        x_hat = VAEGAN.decoder(embeddings)
+        return x_hat.cpu().numpy()
