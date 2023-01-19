@@ -7,6 +7,7 @@ __all__ = ['Visualize', 'Inferance']
 import torch
 import scanpy as sc
 import numpy as np
+from fastcore.utils import *
 
 
 
@@ -38,6 +39,7 @@ def plot_umaps(scdata, color_key_list, rep_list, show=False, log=True):
 # %% ../nbs/07_Evaluation.ipynb 6
 class Inferance:
    "Inferance of the model"
+   pass
 
 # %% ../nbs/07_Evaluation.ipynb 7
 @patch_to(Inferance)
