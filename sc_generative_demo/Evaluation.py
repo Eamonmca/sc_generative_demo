@@ -22,7 +22,7 @@ class Visualize:
 def plot_embeddings(scdata, color_key_list, basis_list, device, show=False, log=True):
     for basis in basis_list:
         for color_key in color_key_list:
-            plot_embeddings = sc.pl.embedding(scdata, basis=basis_list, color=color_key, wspace=0.3,  show=show)
+            plot_embeddings = sc.pl.embedding(scdata, basis=basis, color=color_key, wspace=0.3,  show=show)
             if log:
                 wandb.log({"plot_embeddings_{}_{}".format(basis, color_key): wandb.Image(plot_embeddings)})
 
