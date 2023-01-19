@@ -18,7 +18,7 @@ class Visualize:
 
 # %% ../nbs/07_Evaluation.ipynb 4
 @patch_to(Visualize)
-def plot_embeddings(scdata, color_key_list, basis_list, show=False, log=True):
+def plot_embeddings(scdata, color_key_list, basis_list, device, show=False, log=True):
     for basis in basis_list:
         for color_key in color_key_list:
             plot_embeddings = sc.pl.embedding(scdata, basis=basis_list, color=color_key, wspace=0.3,  show=show)
@@ -27,7 +27,7 @@ def plot_embeddings(scdata, color_key_list, basis_list, show=False, log=True):
 
 # %% ../nbs/07_Evaluation.ipynb 5
 @patch_to(Visualize)
-def plot_umaps(scdata, color_key_list, rep_list, show=False, log=True):
+def plot_umaps(scdata, color_key_list, rep_list, device, show=False, log=True):
     for rep in rep_list:
         for color_key in color_key_list:
             umap = sc.pp.neighbors(scdata, use_rep=rep)
@@ -43,7 +43,7 @@ class Inferance:
 
 # %% ../nbs/07_Evaluation.ipynb 7
 @patch_to(Inferance)
-def get_embeddings_VAEGAN(VAEGAN, dataloader):
+def get_embeddings_VAEGAN(VAEGAN, dataloader, device):
     with torch.no_grad():
         embeddings = []
         labels = []
@@ -58,7 +58,7 @@ def get_embeddings_VAEGAN(VAEGAN, dataloader):
 
 # %% ../nbs/07_Evaluation.ipynb 8
 @patch_to(Inferance)
-def decode_embeddings_VAEGAN(VAEGAN, embeddings):
+def decode_embeddings_VAEGAN(VAEGAN, embeddings, device):
     with torch.no_grad():
         embeddings = torch.from_numpy(embeddings).to(device)
         x_hat = VAEGAN.decoder(embeddings)
