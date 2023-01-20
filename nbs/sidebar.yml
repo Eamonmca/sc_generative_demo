@@ -9,3 +9,4 @@ website:
       - 04_Model_Classifier.ipynb
       - 05_Model_Variational_Encoder.ipynb
       - 06_Model_Variational_Decoder.ipynb
+      - 07_Evaluation.ipynb
