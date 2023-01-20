@@ -9,6 +9,7 @@ import scanpy as sc
 import numpy as np
 from fastcore.utils import *
 import wandb
+import scib
 
 
 

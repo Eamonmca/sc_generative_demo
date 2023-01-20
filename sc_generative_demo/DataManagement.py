@@ -6,6 +6,7 @@ __all__ = ['SplitData']
 # %% ../nbs/02_data_management.ipynb 3
 import random
 import math
+from fastcore.utils import *
 from sklearn.model_selection import train_test_split
 import pandas as pd
 
@@ -169,11 +170,5 @@ class SplitData:
             # Return the dataframe
             return df
         
-        
-    
 
-        
-        
-  
-    
 
