@@ -4,6 +4,7 @@
 __all__ = ['VAEGAN']
 
 # %% ../../nbs/08_Model_VAEGAN.ipynb 3
+import torch 
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
