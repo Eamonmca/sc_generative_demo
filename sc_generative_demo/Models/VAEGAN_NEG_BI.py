@@ -36,6 +36,7 @@ class VAEGAN_NEG_BI(nn.Module):
         print(x_hat.shape)
         Negative_binomial = NegativeBinomial(total_count=F.sigmoid(x_hat[:,0]), logits=F.softmax(x_hat[:,1]))
         x_hat = Negative_binomial.sample()
-        y_hat = self.classifier(z)
-        return x_hat, y_hat, mu, logvar
+        print(x_hat)
+        # y_hat = self.classifier(z)
+        return x_hat, mu, logvar
 
