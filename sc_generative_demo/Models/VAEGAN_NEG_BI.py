@@ -28,7 +28,6 @@ class VAEGAN_NEG_BI(nn.Module):
 
     def forward(self, x):
         mu, log_disp = self.encoder(x)
-        mu = torch.softmax(mu, dim=1)
         log_disp = torch.softmax(log_disp, dim=1)
         disp = torch.exp(log_disp)
         z = self.reparameterize(mu, disp)
