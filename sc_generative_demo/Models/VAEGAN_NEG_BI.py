@@ -26,8 +26,11 @@ class VAEGAN_NEG_BI(nn.Module):
         std = torch.exp(0.5*logvar)
         eps = torch.randn_like(std)
         z = (mu + eps*std)
-        total_count = torch.exp(torch.sigmoid(z[:,0]))
-        negative_binomial = NegativeBinomial(total_count=torch.exp(z[:,0]), probs=torch.sigmoid(z[:,1:]))
+        total_count_layer = torch.nn.Linear(self.encoder.latent_size, 1)
+        total_count = F.softplus(total_count_layer(z))
+        probs_layer = torch.nn.Linear(self.encoder.latent_size, 1)
+        probs = F.sigmoid(probs_layer(z))
+        negative_binomial = NegativeBinomial(total_count=total_count, probs=probs)
         z = negative_binomial.sample()
         return z
 
