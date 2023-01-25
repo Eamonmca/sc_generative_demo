@@ -23,7 +23,7 @@ class VAEGAN_NEG_BI(nn.Module):
         assert(self.encoder.latent_size == self.classifier.input_size)
         
     def reparameterize(self, mu, disp):
-        z = NegativeBinomial(mu, logits=disp).rsample()
+        z = NegativeBinomial(mu, logits=disp).sample()
         return z
 
     def forward(self, x):
