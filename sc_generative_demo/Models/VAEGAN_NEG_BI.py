@@ -32,7 +32,7 @@ class VAEGAN_NEG_BI(nn.Module):
         mu, logvar = self.encoder(x)
         z = self.reparameterize(mu, logvar)
         x_hat = self.decoder(z)
-        NegativeBinomial(total_count=x_hat[0], logits=x_hat[1])
+        NegativeBinomial(total_count=F.sigmoid(x_hat[0]), logits=F.softmax(x_hat[1], dim=1))
         y_hat = self.classifier(z)
         return x_hat, y_hat, mu, logvar
 
