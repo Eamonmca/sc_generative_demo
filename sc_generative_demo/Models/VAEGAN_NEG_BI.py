@@ -28,6 +28,14 @@ class VAEGAN_NEG_BI(nn.Module):
         eps = torch.randn_like(std)
         z = (mu + eps*std)
         return z
+    
+    def decode(self, z):
+        h_r = self.decoder_r(z)
+        h_p = self.decoder_p(z)
+        h_r = F.relu(h_r)
+        h_p = F.softmax(h_p, dim = 1)
+        x_hat = NegativeBinomial(h_r, logits = h_p).sample()
+        return x_hat
 
     def forward(self, x):
         mu, logvar = self.encoder(x)
