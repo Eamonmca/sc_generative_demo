@@ -32,12 +32,13 @@ class VAEGAN_NEG_BI(nn.Module):
     def forward(self, x):
         mu, logvar = self.encoder(x)
         z = self.reparameterize(mu, logvar)
-        total_count_layer = torch.nn.Linear(self.encoder.latent_size, 1)
-        total_count = F.softplus(total_count_layer(z))
-        probs_layer = torch.nn.Linear(self.encoder.latent_size, 1)
-        probs = F.sigmoid(probs_layer(z))
+        self.total_count_layer = torch.nn.Linear(self.encoder.latent_size, 1)
+        total_count = F.softplus(self.total_count_layer(z))
+        self.probs_layer = torch.nn.Linear(self.encoder.latent_size, 1)
+        probs = F.sigmoid(self.probs_layer(z))
         negative_binomial = NegativeBinomial(total_count=total_count, probs=probs)
         z = negative_binomial.sample()
+        x_hat = self.decoder(z)
         y_hat = self.classifier(z)
         return x_hat, y_hat, mu, logvar
     
