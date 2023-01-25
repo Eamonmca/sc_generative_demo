@@ -23,13 +23,11 @@ class VAEGAN_NEG_BI(nn.Module):
         assert(self.encoder.latent_size == self.classifier.input_size)
         
     def reparameterize(self, mu, disp):
-        z = NegativeBinomial(mu, disp).rsample()
+        z = NegativeBinomial(mu, logits=disp).rsample()
         return z
 
     def forward(self, x):
-        mu, log_disp = self.encoder(x)
-        mu = F.relu(mu)
-        log_disp = torch.softmax(log_disp, dim=1)
+        mu, log_disp = self.encoder(x) 
         disp = torch.exp(log_disp)
         z = self.reparameterize(mu, disp)
         x_hat = self.decoder(z)
