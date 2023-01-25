@@ -32,5 +32,5 @@ class VAEGAN_NEG_BI(nn.Module):
         z = self.reparameterize(mu, disp)
         x_hat = self.decoder(z)
         y_hat = self.classifier(z)
-        return x_hat, y_hat, mu, log_disp
+        return x_hat, y_hat, mu, disp
     
