@@ -11,13 +11,15 @@ import torch.nn.functional as F
 from torch.distributions import NegativeBinomial
 
 class VAEGAN_NEG_BI(nn.Module):
-    def __init__(self, encoder, decoder, classifier):
+    def __init__(self, encoder, decoder_r, decoder_p, classifier):
         """
         The VAEGAN model with Negative Binomial distribution as Latent Variable
         """
         super(VAEGAN_NEG_BI, self).__init__()
         self.encoder = encoder 
-        self.decoder = decoder
+        self.decoder_r = decoder_r
+        self.decoder_p = decoder_p
+        
         self.classifier = classifier
         assert(self.encoder.latent_size == self.decoder.input_size)
         assert(self.encoder.latent_size == self.classifier.input_size)
@@ -31,9 +33,9 @@ class VAEGAN_NEG_BI(nn.Module):
     def forward(self, x):
         mu, logvar = self.encoder(x)
         z = self.reparameterize(mu, logvar)
-        count, disp = self.decoder(z)
-        nb = NegativeBinomial(total_count=count, logits=disp)
-        x_hat = nb.sample()
+        h_r = self.decoder_r(z)
+        h_p = self.decoder_p(z)
         y_hat = self.classifier(z)
-        return x_hat, y_hat, mu, logvar
+        x_hat = NegativeBinomial(h_r, h_p).sample()
+        return x_hat, y_hat, mu, logvar, h_r, h_p
 
