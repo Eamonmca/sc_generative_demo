@@ -28,6 +28,8 @@ class VAEGAN_NEG_BI(nn.Module):
 
     def forward(self, x):
         mu, log_disp = self.encoder(x) 
+        mu = F.relu(mu)
+        log_disp = F.relu(log_disp)
         disp = torch.exp(log_disp)
         z = self.reparameterize(mu, disp)
         x_hat = self.decoder(z)
