@@ -31,9 +31,9 @@ class VAEGAN_NEG_BI(nn.Module):
     def forward(self, x):
         mu, logvar = self.encoder(x)
         z = self.reparameterize(mu, logvar)
-        mu, disp = self.decoder(z)
-        nb = NegativeBinomial(total_count=disp, logits=mu)
+        count, disp = self.decoder(z)
+        nb = NegativeBinomial(total_count=count, logits=disp)
         x_hat = nb.sample()
         y_hat = self.classifier(z)
-        return x_hat, y_hat, mu, logvar
+        return x_hat, y_hat, mu, 
 
