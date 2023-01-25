@@ -21,8 +21,7 @@ class VAEGAN_NEG_BI(nn.Module):
         self.decoder_p = decoder_p
         
         self.classifier = classifier
-        assert(self.encoder.latent_size == self.decoder.input_size)
-        assert(self.encoder.latent_size == self.classifier.input_size)
+    
         
     def reparameterize(self, mu, logvar):
         std = torch.exp(0.5*logvar)
