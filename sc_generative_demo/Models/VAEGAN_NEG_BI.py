@@ -15,7 +15,7 @@ class VAEGAN_NEG_BI(nn.Module):
         """
         The VAEGAN model with Negative Binomial distribution as Latent Variable
         """
-        super(VAEGAN, self).__init__()
+        super(VAEGAN_NEG_BI, self).__init__()
         self.encoder = encoder 
         self.decoder = decoder
         self.classifier = classifier
