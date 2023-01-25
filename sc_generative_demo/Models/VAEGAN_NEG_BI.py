@@ -35,5 +35,5 @@ class VAEGAN_NEG_BI(nn.Module):
         nb = NegativeBinomial(total_count=count, logits=disp)
         x_hat = nb.sample()
         y_hat = self.classifier(z)
-        return x_hat, y_hat, mu, 
+        return x_hat, y_hat, mu, logvar
 
