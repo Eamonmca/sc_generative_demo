@@ -22,17 +22,19 @@ class VAEGAN_NEG_BI(nn.Module):
         assert(self.encoder.latent_size == self.decoder.input_size)
         assert(self.encoder.latent_size == self.classifier.input_size)
         
-    def reparameterize(self, mu, disp):
-        z = NegativeBinomial(mu, logits=disp).sample()
+    def reparameterize(self, mu, logvar):
+        std = torch.exp(0.5*logvar)
+        eps = torch.randn_like(std)
+        z = (mu + eps*std)
+        total_count = torch.exp(torch.sigmoid(z[:,0]))
+        negative_binomial = NegativeBinomial(total_count=torch.exp(z[:,0]), probs=torch.sigmoid(z[:,1:]))
+        z = negative_binomial.sample()
         return z
 
     def forward(self, x):
-        mu, log_disp = self.encoder(x) 
-        mu = F.relu(mu)
-        log_disp = F.relu(log_disp)
-        disp = torch.exp(log_disp)
-        z = self.reparameterize(mu, disp)
+        mu, logvar = self.encoder(x)
+        z = self.reparameterize(mu, logvar)
         x_hat = self.decoder(z)
         y_hat = self.classifier(z)
-        return x_hat, y_hat, mu, disp
+        return x_hat, y_hat, mu, logvar
     
