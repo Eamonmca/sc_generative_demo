@@ -83,15 +83,3 @@ def decode_embeddings_VAEGAN(VAEGAN, embeddings, device):
             x_hat = VAEGAN.decoder(batch)
         x_hat = VAEGAN.decode()
         return x_hat.cpu().numpy()
-
-# %% ../nbs/07_Evaluation.ipynb 10
-@patch_to(Inferance)
-def decode_embeddings_VAEGAN_NEG_BI(VAEGAN, embeddings, device):
-    with torch.no_grad():
-        embeddings = torch.from_numpy(embeddings).to(device)
-        embeddings_list = []
-        for batch in embeddings:
-            batch = batch.to(device)
-            x_hat = VAEGAN.decode(batch)
-            embeddings_list.append(x_hat.cpu().numpy())
-        return embeddings_list
