@@ -13,6 +13,7 @@ import scib
 
 
 
+
 class Visualize:
     "Evaluation of the model"
     pass
@@ -51,7 +52,7 @@ def get_embeddings_VAEGAN(VAEGAN, dataloader, device):
         labels = []
         for batch, label in dataloader:
             batch = batch.to(device)
-            x_hat, y_hat, mu, logvar, h_r, h_p = VAEGAN(batch)
+            x_hat, y_hat, mu, logvar = VAEGAN(batch)
             embeddings.append(mu.cpu().numpy())
             labels.append(label.cpu().numpy())
         embeddings = np.concatenate(embeddings)
@@ -60,8 +61,37 @@ def get_embeddings_VAEGAN(VAEGAN, dataloader, device):
 
 # %% ../nbs/07_Evaluation.ipynb 8
 @patch_to(Inferance)
+def get_embeddings_VAEGAN_NEG_BI(VAEGAN, dataloader, device):
+    with torch.no_grad():
+        embeddings = []
+        labels = []
+        for batch, label in dataloader:
+            batch = batch.to(device)
+            x_hat, y_hat, mu, logvar, h_r, h_p = VAEGAN(batch)
+            embeddings.append(mu.cpu().numpy())
+            labels.append(label.cpu().numpy())
+        embeddings = np.concatenate(embeddings)
+        labels = np.concatenate(labels)
+        return embeddings
+
+# %% ../nbs/07_Evaluation.ipynb 9
+@patch_to(Inferance)
 def decode_embeddings_VAEGAN(VAEGAN, embeddings, device):
     with torch.no_grad():
         embeddings = torch.from_numpy(embeddings).to(device)
-        x_hat = VAEGAN.decode(embeddings)
+        for batch in embeddings:
+            x_hat = VAEGAN.decoder(batch)
+        x_hat = VAEGAN.decode()
         return x_hat.cpu().numpy()
+
+# %% ../nbs/07_Evaluation.ipynb 10
+@patch_to(Inferance)
+def decode_embeddings_VAEGAN_NEG_BI(VAEGAN, embeddings, device):
+    with torch.no_grad():
+        embeddings = torch.from_numpy(embeddings).to(device)
+        embeddings_list = []
+        for batch in embeddings:
+            batch = batch.to(device)
+            x_hat = VAEGAN.decode(batch)
+            embeddings_list.append(x_hat.cpu().numpy())
+        return embeddings_list

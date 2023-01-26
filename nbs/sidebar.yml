@@ -10,3 +10,8 @@ website:
       - 05_Model_Variational_Encoder.ipynb
       - 06_Model_Variational_Decoder.ipynb
       - 07_Evaluation.ipynb
+      - 08_Model_VAE.ipynb
+      - 09_Model_VAEGAN.ipynb
+      - 10_Losses.ipynb
+      - 11_Model_VAEGAN_NEG_BI.ipynb
+      - 12_Model_Variational_Decoder_NEG.ipynb
