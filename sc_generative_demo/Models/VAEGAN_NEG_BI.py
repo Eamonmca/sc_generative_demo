@@ -33,18 +33,16 @@ class VAEGAN_NEG_BI(nn.Module):
         h_r = self.decoder_r(z)
         h_p = self.decoder_p(z)
         h_r = F.relu(h_r)
-        h_p = F.relu(h_p)
+        h_p = F.softmax(h_p, dim = 1)
         x_hat = NegativeBinomial(h_r, logits = h_p).sample()
-        return x_hat
+        return x_hat, h_r, h_p
+
 
     def forward(self, x):
         mu, logvar = self.encoder(x)
         z = self.reparameterize(mu, logvar)
-        h_r = self.decoder_r(z)
-        h_p = self.decoder_p(z)
-        h_r = F.relu(h_r)
-        h_p = F.relu(h_p)
-        y_hat = self.classifier(z)
-        x_hat = NegativeBinomial(h_r, logits = h_p).sample()
+        x_hat, h_r, h_p = self.decode(z)
+        y_hat = self.classifier(z) 
         return x_hat, y_hat, mu, logvar, h_r, h_p
+
 
