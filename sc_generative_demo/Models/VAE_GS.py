@@ -33,6 +33,7 @@ class VAE_GS(nn.Module):
        h_c = self.decoder_c(z)
        h_a = F.relu(h_a)
        h_b = F.relu(h_b)
+       h_c = F.softmax(h_c, dim = 1)
        x_hat = NegativeBinomial(h_a, logits = h_b).sample()
        y_hat = F.gumbel_softmax(h_c, tau = 0.1, hard = True)
        return x_hat, y_hat, h_a, h_b, h_c
