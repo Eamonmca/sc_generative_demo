@@ -15,3 +15,5 @@ website:
       - 10_Losses.ipynb
       - 11_Model_VAEGAN_NEG_BI.ipynb
       - 12_Model_Variational_Decoder_NEG.ipynb
+      - 13_Model_VAEGAN_NEG_BI copy.ipynb
+      - 14_Joint_VAE_with_labels.ipynb
