@@ -89,6 +89,7 @@ def decode_embeddings_VAEGAN(VAEGAN, embeddings, device):
 def decode_embeddings_VAEGAN_NEG_BI(VAEGAN, embeddings, l, device, norm = False):
     with torch.no_grad():
         embeddings = torch.from_numpy(embeddings).to(device)
+        l = torch.from_numpy(l).to(device)
         embeddings_list = []
         for batch in embeddings:
             batch = batch.to(device)
