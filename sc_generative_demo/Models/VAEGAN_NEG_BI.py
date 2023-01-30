@@ -33,8 +33,8 @@ class VAEGAN_NEG_BI(nn.Module):
     
     def decode(self, z, l):
         h_r = self.decoder_r(z) 
-        h_p = self.decoder_p(h_r)
         h_r = F.softmax(h_r, dim=-1)
+        h_p = self.decoder_p(h_r)
         # h_p = h_p.clamp(min=1e-8)
         h_p = torch.exp(l) * h_p
         x_hat = NegativeBinomial(mu = h_r, theta= h_p).sample()
