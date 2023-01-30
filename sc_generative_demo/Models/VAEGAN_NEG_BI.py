@@ -34,7 +34,7 @@ class VAEGAN_NEG_BI(nn.Module):
         h_r = self.decoder_r(z) 
         h_p = self.decoder_p(z)
         h_r = F.softmax(h_r, dim=-1)
-        # h_p = F.relu(h_p)
+        h_p = F.relu(h_p)
         x_hat = NegativeBinomial(mu = h_r, theta= h_p).sample()
         return x_hat, h_r, h_p
 
