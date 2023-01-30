@@ -92,6 +92,10 @@ def decode_embeddings_VAEGAN_NEG_BI(VAEGAN, embeddings, l, device, norm = False)
         z_list = torch.utils.data.DataLoader(z_list, batch_size=1, shuffle=False)
         embeddings_list = []
         for batch, l in z_list:
+            print(batch.shape)
+            print(l.shape)
+            print(batch)
+            print(l)
             batch = batch.to(device)
             l = l.to(device)
             if norm == True:
