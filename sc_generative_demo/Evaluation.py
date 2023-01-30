@@ -64,15 +64,15 @@ def get_embeddings_VAEGAN(VAEGAN, dataloader, device):
 def get_embeddings_VAEGAN_NEG_BI(VAEGAN, dataloader, device):
     with torch.no_grad():
         embeddings = []
-        labels = []
+        ls = []
         for batch, label in dataloader:
             batch = batch.to(device)
-            x_hat, y_hat, mu, logvar, h_r, h_p = VAEGAN(batch)
+            x_hat, y_hat, mu, logvar, h_r, h_p, l = VAEGAN(batch)
             embeddings.append(mu.cpu().numpy())
-            labels.append(label.cpu().numpy())
+            ls.append(l.cpu().numpy())
         embeddings = np.concatenate(embeddings)
-        labels = np.concatenate(labels)
-        return embeddings
+        ls= np.concatenate(ls)
+        return embeddings, ls
 
 # %% ../nbs/07_Evaluation.ipynb 9
 @patch_to(Inferance)
@@ -86,17 +86,17 @@ def decode_embeddings_VAEGAN(VAEGAN, embeddings, device):
 
 # %% ../nbs/07_Evaluation.ipynb 10
 @patch_to(Inferance)
-def decode_embeddings_VAEGAN_NEG_BI(VAEGAN, embeddings, device, norm = False):
+def decode_embeddings_VAEGAN_NEG_BI(VAEGAN, embeddings, l, device, norm = False):
     with torch.no_grad():
         embeddings = torch.from_numpy(embeddings).to(device)
         embeddings_list = []
         for batch in embeddings:
             batch = batch.to(device)
             if norm == True:
-                x_hat, h_r, h_p = VAEGAN.decode(batch[None])
+                x_hat, h_r, h_p = VAEGAN.decode(batch[None], l)
                 x_hat = torch.squeeze(x_hat)
             else:
-                x_hat, h_r, h_p, l = VAEGAN.decode(batch)
+                x_hat, h_r, h_p, l = VAEGAN.decode(batch, l)
             embeddings_list.append(x_hat.cpu().numpy())
         embeddings_list = np.array(embeddings_list)
         return embeddings_list
