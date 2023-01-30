@@ -48,6 +48,7 @@ class VAEGAN_NEG_BI(nn.Module):
         mu_z, logvar_z = self.encoder_z(x)
         
         l = self.reparameterize(mu_l, logvar_l)
+        l = torch.clamp(l, 12)
         z = self.reparameterize(mu_z, logvar_z)
         
         x_hat, h_r, h_p = self.decode(z,l)
