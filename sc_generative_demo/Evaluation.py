@@ -93,7 +93,7 @@ def decode_embeddings_VAEGAN_NEG_BI(VAEGAN, embeddings, l, device, norm = False)
         for batch in embeddings:
             batch = batch.to(device)
             if norm == True:
-                x_hat, h_r, h_p = VAEGAN.decode(batch[None], l)
+                x_hat, h_r, h_p = VAEGAN.decode(batch[None], l, train = False)
                 x_hat = torch.squeeze(x_hat)
             else:
                 x_hat, h_r, h_p, l = VAEGAN.decode(batch, l)
