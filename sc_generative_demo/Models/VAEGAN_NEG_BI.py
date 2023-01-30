@@ -25,6 +25,7 @@ class VAEGAN_NEG_BI(nn.Module):
     
         
     def reparameterize(self, mu, logvar):
+        logvar = logvar + 1e-8
         std = torch.exp(0.5*logvar)
         eps = torch.randn_like(std)
         z = (mu + eps*std)
@@ -34,8 +35,8 @@ class VAEGAN_NEG_BI(nn.Module):
         h_r = self.decoder_r(z) 
         h_p = self.decoder_p(z)
         h_r = F.sigmoid(h_r)
-        # h_p = F.softmax(h_p) 
-        x_hat = NegativeBinomial(total_count = h_r, logits = h_p).sample()
+        h_p = F.softmax(h_p) 
+        x_hat = NegativeBinomial(total_count = h_r, probs= h_p).sample()
         return x_hat, h_r, h_p
 
 
