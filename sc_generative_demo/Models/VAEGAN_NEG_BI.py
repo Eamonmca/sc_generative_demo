@@ -43,7 +43,7 @@ class VAEGAN_NEG_BI(nn.Module):
         return x_hat, h_r, h_p
 
 
-    def forward(self, x, log=False):
+    def forward(self, x, log=True):
         if log :
             x= torch.log(x+1)
         mu_l, logvar_l = self.encoder_l(x)
