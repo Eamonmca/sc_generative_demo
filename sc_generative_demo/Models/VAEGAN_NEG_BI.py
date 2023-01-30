@@ -35,10 +35,9 @@ class VAEGAN_NEG_BI(nn.Module):
     def decode(self, z, l):
         h_x = self.decoder_x(z) 
         h_r = self.decoder_r(h_x)      
-        h_r = F.relu(h_r)
-        h_p = self.decoder_p(h_x)
-        h_p = F.softmax(h_p)
-        h_p = torch.exp(torch.clamp(l, 12)) * h_p
+        h_r = F.softmax(h_r)
+        
+        # h_p = torch.exp(torch.clamp(l, 12)) * h_r
         x_hat = NegativeBinomial(mu = h_r, theta= h_p).sample()
         return x_hat, h_r, h_p
 
@@ -56,6 +55,6 @@ class VAEGAN_NEG_BI(nn.Module):
         
         y_hat = self.classifier(z) 
         
-        return x_hat, y_hat, mu_z, logvar_z, h_r, h_p
+        return x_hat, y_hat, mu_z, logvar_z, h_r, h_p, l
 
 
