@@ -33,7 +33,9 @@ class VAEGAN_NEG_BI(nn.Module):
     
     def decode(self, z, l):
         h_r = self.decoder_r(z) 
-        h_r = F.softmax(h_r, dim=-1)
+        h_r = F.softmax(h_r, dim=1)
+        print(h_r.shape)
+        print(h_r)
         h_p = self.decoder_p(h_r)
         # h_p = h_p.clamp(min=1e-8)
         h_p = torch.exp(l) * h_p
