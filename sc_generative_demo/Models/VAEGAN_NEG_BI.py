@@ -10,6 +10,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 import scvi
 from scvi.models.distributions import NegativeBinomial
+from torch.distributions import Normal
 
 class VAEGAN_NEG_BI(nn.Module):
     def __init__(self, encoder, decoder_r, decoder_p, classifier, log = True):
@@ -25,10 +26,8 @@ class VAEGAN_NEG_BI(nn.Module):
     
         
     def reparameterize(self, mu, logvar):
-        logvar = logvar + 1e-8
-        std = torch.exp(0.5*logvar)
-        eps = torch.randn_like(std)
-        z = (mu + eps*std)
+        var = logvar.exp() + 1e-8
+        z = Normal(mu, var.sqrt()).rsample()
         return z
     
     def decode(self, z):
