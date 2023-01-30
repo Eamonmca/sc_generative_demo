@@ -34,6 +34,7 @@ class VAEGAN_NEG_BI(nn.Module):
     
     def decode(self, z, l):
         h_x = self.decoder_x(z) 
+        h_x = F.relu(h_x)
         h_r = self.decoder_r(h_x)      
         h_r = F.softmax(h_r)
         
