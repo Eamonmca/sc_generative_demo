@@ -32,13 +32,15 @@ class VAEGAN_NEG_BI(nn.Module):
         z = Normal(mu, var.sqrt()).rsample()
         return z
     
-    def decode(self, z, l):
+    def decode(self, z, l, train = True):
         h_x = self.decoder_x(z) 
         h_x = F.relu(h_x)
         h_r = self.decoder_r(h_x)      
         h_r = F.softmax(h_r)
-        
-        h_p = torch.exp(l) * h_r
+        if train :
+            h_p = torch.exp(torch.clamp(l)) * h_r
+        else :
+            h_p = torch.exp(l) * h_r
         x_hat = NegativeBinomial(mu = h_r, theta= h_p).sample()
         return x_hat, h_r, h_p
 
