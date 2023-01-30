@@ -28,7 +28,7 @@ class VAEGAN_NEG_BI(nn.Module):
     
         
     def reparameterize(self, mu, logvar):
-        var = torch.exp(logvar) + 1e-8
+        var = torch.exp(logvar) + 1e-4
         z = Normal(mu, var.sqrt()).rsample()
         return z
     
