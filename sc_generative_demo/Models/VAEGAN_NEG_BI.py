@@ -13,13 +13,14 @@ from scvi.models.distributions import NegativeBinomial
 from torch.distributions import Normal
 
 class VAEGAN_NEG_BI(nn.Module):
-    def __init__(self, encoder_z, encoder_l, decoder_r, decoder_p, classifier, log = True):
+    def __init__(self, encoder_z, encoder_l, decoder_x, decoder_r, decoder_p, classifier, log = True):
         """
         The VAEGAN model with Negative Binomial distribution as Latent Variable
         """
         super(VAEGAN_NEG_BI, self).__init__()
         self.encoder_z = encoder_z
         self.encoder_l = encoder_l
+        self.decoder_x = decoder_x
         self.decoder_r = decoder_r
         self.decoder_p = decoder_p
         
@@ -32,9 +33,10 @@ class VAEGAN_NEG_BI(nn.Module):
         return z
     
     def decode(self, z, l):
-        h_r = self.decoder_r(z) 
+        h_x = self.decoder_x(z) 
+        h_r = self.decoder_r(h_x)      
         h_r = F.softmax(h_r, dim=1)
-        h_p = self.decoder_p(h_r)
+        h_p = self.decoder_p(h_x)
         
         h_p = torch.exp(torch.clamp(l, 12)) * h_p
         x_hat = NegativeBinomial(mu = h_r, theta= h_p).sample()
