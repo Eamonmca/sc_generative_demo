@@ -56,6 +56,6 @@ class VAEGAN_NEG_BI(nn.Module):
         
         y_hat = self.classifier(z) 
         
-        return x_hat, y_hat, mu_z, logvar_z, h_r, h_p, l
+        return x_hat, y_hat, mu_z, logvar_z, mu_l, logvar_l, h_r, h_p, l
 
 
