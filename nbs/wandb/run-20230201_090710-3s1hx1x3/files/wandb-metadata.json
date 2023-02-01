@@ -1,0 +1,41 @@
+{
+    "os": "macOS-10.16-x86_64-i386-64bit",
+    "python": "3.9.13",
+    "heartbeatAt": "2023-02-01T09:07:10.820451",
+    "startedAt": "2023-02-01T09:07:10.188068",
+    "docker": null,
+    "cuda": null,
+    "args": null,
+    "state": "running",
+    "program": "<python with no main file>",
+    "git": {
+        "remote": "git@github.com:Eamonmca/sc_generative_demo.git",
+        "commit": "4e5f679f4b550dc4c8af26c27a759b8ed42d06b3"
+    },
+    "email": "emcandrew12@gmail.com",
+    "root": "/Users/eamonmcandrew/Desktop/Single_cell_integration/scgenerative_demo",
+    "host": "Eamons-MacBook-Pro.local",
+    "username": "eamonmcandrew",
+    "executable": "/Users/eamonmcandrew/opt/anaconda3/envs/scINTEGRATION/bin/python",
+    "cpu_count": 10,
+    "cpu_count_logical": 10,
+    "cpu_freq": {
+        "current": 2400,
+        "min": 2400,
+        "max": 2400
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 2400,
+            "min": 2400,
+            "max": 2400
+        }
+    ],
+    "disk": {
+        "total": 926.3517189025879,
+        "used": 310.51787185668945
+    },
+    "memory": {
+        "total": 32.0
+    }
+}

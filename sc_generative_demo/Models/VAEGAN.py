@@ -21,6 +21,9 @@ class VAEGAN(nn.Module):
         assert(self.encoder.latent_size == self.decoder.input_size)
         assert(self.encoder.latent_size == self.classifier.input_size)
         
+    def decode(self, z):
+        return self.decoder(z)
+        
     def reparameterize(self, mu, logvar):
         std = torch.exp(0.5*logvar)
         eps = torch.randn_like(std)
